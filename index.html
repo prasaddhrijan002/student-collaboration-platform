@@ -206,6 +206,61 @@
               </p>
             </div>
 
+            <div class="create-project-container">
+                <button id="createProjectBtn" class="create-project-btn">
+                    + Create Project
+                </button>
+            </div>
+
+            <div id="createProjectForm" class="create-project-form">
+
+                <h2>Create Your Project</h2>
+
+                <p class="form-subtitle">
+                    Share your idea and find students to build it with.
+                </p>
+
+                <label for="projectTitle">Project Title</label>
+                <input
+                    type="text"
+                    id="projectTitle"
+                    placeholder="Enter your project title"
+                >
+
+                <label for="projectDescription">Description</label>
+                <textarea
+                    id="projectDescription"
+                    placeholder="Describe your project..."
+                    rows="5"
+                ></textarea>
+
+                <label for="projectSkills">Required Skills</label>
+                <input
+                    type="text"
+                    id="projectSkills"
+                    placeholder="Example: JavaScript, Python, UI/UX"
+                >
+
+                <label for="projectTeamSize">Team Size</label>
+                <input
+                    type="number"
+                    id="projectTeamSize"
+                    min="2"
+                    placeholder="Example: 4"
+                >
+
+                <div class="form-buttons">
+                    <button id="cancelProjectBtn" class="cancel-btn">
+                        Cancel
+                    </button>
+
+                    <button id="publishProjectBtn" class="create-project-btn">
+                        Publish Project
+                    </button>
+                </div>
+
+            </div>
+
             <div class="projects-container" id="projectsContainer"></div>
 
         </section>

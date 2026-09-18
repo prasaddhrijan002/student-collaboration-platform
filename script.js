@@ -454,3 +454,74 @@ document.addEventListener("click", function(event) {
     }
 
 });
+
+const createProjectBtn = document.getElementById("createProjectBtn");
+const createProjectForm = document.getElementById("createProjectForm");
+
+createProjectBtn.addEventListener("click", function() {
+    createProjectForm.style.display = "block";
+
+    createProjectForm.scrollIntoView({
+        behavior: "smooth"
+    });
+});
+
+const cancelProjectBtn = document.getElementById("cancelProjectBtn");
+
+cancelProjectBtn.addEventListener("click", function() {
+    createProjectForm.style.display = "none";
+
+    document.getElementById("projects").scrollIntoView({
+        behavior: "smooth"
+    });
+});
+
+const publishProjectBtn = document.getElementById("publishProjectBtn");
+
+publishProjectBtn.addEventListener("click", function() {
+
+    const title = document.getElementById("projectTitle").value.trim();
+    const description = document.getElementById("projectDescription").value.trim();
+    const skillsText = document.getElementById("projectSkills").value.trim();
+    const teamSize = Number(document.getElementById("projectTeamSize").value);
+
+    if (!title || !description || !skillsText || !teamSize) {
+        alert("Please fill in all project details.");
+        return;
+    }
+
+    const skills = skillsText
+        .split(",")
+        .map(function(skill) {
+            return skill.trim();
+        })
+        .filter(function(skill) {
+            return skill !== "";
+        });
+
+    const newProject = {
+        id: projects.length + 1,
+        title: title,
+        description: description,
+        creator: "You",
+        skills: skills,
+        teamSize: teamSize,
+        currentMembers: 1
+    };
+
+    projects.push(newProject);
+
+    displayProjects(projects);
+
+    createProjectForm.style.display = "none";
+
+    document.getElementById("projects").scrollIntoView({
+        behavior: "smooth"
+    });
+
+    document.getElementById("projectTitle").value = "";
+    document.getElementById("projectDescription").value = "";
+    document.getElementById("projectSkills").value = "";
+    document.getElementById("projectTeamSize").value = "";
+});
+
