@@ -130,6 +130,7 @@ function displayStudents(studentList) {
             <a
                 href="#"
                 class="profile-btn"
+                data-id="${student.id}"
             >
                 View Profile
             </a>
@@ -195,4 +196,77 @@ studentSearch.addEventListener("input", function() {
 
     displayStudents(filteredStudents);
 
+});
+
+const profileSection = document.getElementById("profile");
+const profileContent = document.getElementById("profileContent");
+const backToStudents = document.getElementById("backToStudents");
+
+function showProfile(studentId) {
+    const student = students.find(function(student) {
+        return student.id === studentId;
+    });
+
+    if (!student) {
+        return;
+    }
+
+    profileContent.innerHTML = `
+        <div class="student-avatar">${student.name.charAt(0)}</div>
+
+        <h1>${student.name}</h1>
+
+        <p class="student-college">${student.college}</p>
+
+        <h3>Skills</h3>
+
+        <div class="skills-container">
+            ${student.skills.map(function(skill) {
+                return `<span class="skill-tag">${skill}</span>`;
+            }).join("")}
+        </div>
+
+        <h3>Interests</h3>
+
+        <p class="interests">
+            ${student.interests.join(", ")}
+        </p>
+
+        <h3>About</h3>
+
+        <p class="profile-about">
+            ${student.about}
+        </p>
+
+        <button class="collaboration-btn">
+            🤝 Request Collaboration
+        </button>
+    `;
+
+    document.getElementById("students").style.display = "none";
+    profileSection.style.display = "block";
+
+    profileSection.scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+document.addEventListener("click", function(event) {
+    if (event.target.classList.contains("profile-btn")) {
+        event.preventDefault();
+
+        const studentId = Number(event.target.dataset.id);
+
+        showProfile(studentId);
+    }
+});
+
+backToStudents.addEventListener("click", function() {
+    profileSection.style.display = "none";
+    
+    document.getElementById("students").style.display = "block";
+
+    document.getElementById("students").scrollIntoView({
+        behavior: "smooth"
+    });
 });

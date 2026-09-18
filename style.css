@@ -476,6 +476,45 @@ footer {
     font-size: 15px;
 }
 
+/* =========================
+   STUDENT PROFILE
+========================= */
+
+.profile-section {
+    display: none;
+    background: #f8fafc;
+    padding: 100px 25px;
+    scroll-margin-top: 80px;
+}
+
+.profile-container {
+    max-width: 900px;
+    margin: auto;
+}
+
+.back-btn {
+    border: none;
+    background: none;
+    color: #4f46e5;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 25px;
+    padding: 0;
+}
+
+.back-btn:hover {
+    opacity: 0.75;
+}
+
+#profileContent {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 40px;
+    min-height: 300px;
+}
+
 
 /* ------------------------------
    MOBILE RESPONSIVE
@@ -511,4 +550,47 @@ footer {
     .preview-section h2 {
         font-size: 30px;
     }
+}
+
+/* Profile Content */
+
+#profileContent {
+    text-align: left;
+}
+
+#profileContent .student-avatar {
+    margin-bottom: 15px;
+}
+
+#profileContent h1 {
+    font-size: 32px;
+    margin-bottom: 5px;
+}
+
+#profileContent h3 {
+    font-size: 18px;
+    margin-top: 30px;
+    margin-bottom: 12px;
+}
+
+.profile-about {
+    color: #4b5563;
+    line-height: 1.7;
+    max-width: 700px;
+}
+
+.collaboration-btn {
+    margin-top: 30px;
+    padding: 13px 22px;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.collaboration-btn:hover {
+    opacity: 0.85;
 }
