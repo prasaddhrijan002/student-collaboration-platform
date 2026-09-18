@@ -358,7 +358,27 @@ function displayProjects(projectList) {
     });
 }
 
-displayProjects(projects);
+const API_URL =
+  "https://51wlhxz97l.execute-api.ap-south-1.amazonaws.com/prod/projects";
+
+async function loadProjectsFromAPI() {
+  try {
+    const response = await fetch(API_URL);
+    const apiProjects = await response.json();
+
+    if (apiProjects.length > 0) {
+      displayProjects(apiProjects);
+    } else {
+      displayProjects(projects);
+    }
+  } catch (error) {
+    console.error("Error loading projects:", error);
+    displayProjects(projects);
+  }
+}
+
+loadProjectsFromAPI();
+
 
 const projectDetailsSection = document.getElementById("projectDetails");
 const projectDetailsContent = document.getElementById("projectDetailsContent");
@@ -478,8 +498,7 @@ cancelProjectBtn.addEventListener("click", function() {
 
 const publishProjectBtn = document.getElementById("publishProjectBtn");
 
-publishProjectBtn.addEventListener("click", function() {
-
+publishProjectBtn.addEventListener("click", async function() {
     const title = document.getElementById("projectTitle").value.trim();
     const description = document.getElementById("projectDescription").value.trim();
     const skillsText = document.getElementById("projectSkills").value.trim();
@@ -500,28 +519,48 @@ publishProjectBtn.addEventListener("click", function() {
         });
 
     const newProject = {
-        id: projects.length + 1,
         title: title,
         description: description,
-        creator: "You",
         skills: skills,
         teamSize: teamSize,
-        currentMembers: 1
+        creator: "You"
     };
 
-    projects.push(newProject);
+    try {
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newProject)
+        });
 
-    displayProjects(projects);
+        if (!response.ok) {
+            throw new Error("Failed to create project");
+        }
 
-    createProjectForm.style.display = "none";
+        const savedProject = await response.json();
 
-    document.getElementById("projects").scrollIntoView({
-        behavior: "smooth"
-    });
+        alert("Project published successfully!");
 
-    document.getElementById("projectTitle").value = "";
-    document.getElementById("projectDescription").value = "";
-    document.getElementById("projectSkills").value = "";
-    document.getElementById("projectTeamSize").value = "";
+        createProjectForm.style.display = "none";
+
+        document.getElementById("projectTitle").value = "";
+        document.getElementById("projectDescription").value = "";
+        document.getElementById("projectSkills").value = "";
+        document.getElementById("projectTeamSize").value = "";
+
+        await loadProjectsFromAPI();
+
+        document.getElementById("projects").scrollIntoView({
+            behavior: "smooth"
+        });
+
+    } catch (error) {
+        console.error("Error creating project:", error);
+        alert("Could not publish project. Please try again.");
+    }
 });
+
+
 
