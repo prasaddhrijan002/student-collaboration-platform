@@ -59,6 +59,38 @@ const students = [
     }
 ];
 
+const projects = [
+    {
+        id: 1,
+        title: "AI Study Assistant",
+        description: "Building an AI-powered study assistant to help students organize and understand their study material.",
+        creator: "Rahul Sharma",
+        skills: ["Python", "AI/ML", "JavaScript"],
+        teamSize: 4,
+        currentMembers: 2
+    },
+
+    {
+        id: 2,
+        title: "Campus Event Finder",
+        description: "A platform where students can discover and share events happening around their campus.",
+        creator: "Priya Singh",
+        skills: ["HTML", "CSS", "JavaScript"],
+        teamSize: 3,
+        currentMembers: 1
+    },
+
+    {
+        id: 3,
+        title: "Student Expense Tracker",
+        description: "A simple application that helps students track and manage their monthly expenses.",
+        creator: "Aman Gupta",
+        skills: ["Java", "Spring Boot", "SQL"],
+        teamSize: 4,
+        currentMembers: 2
+    }
+];
+
 // ----------------------------------
 // DISPLAY STUDENTS
 // ----------------------------------
@@ -278,4 +310,147 @@ document.addEventListener("click", function(event) {
         event.target.disabled = true;
 
     }
+});
+
+const projectsContainer = document.getElementById("projectsContainer");
+
+function displayProjects(projectList) {
+    projectsContainer.innerHTML = "";
+
+    projectList.forEach(function(project) {
+
+        const projectCard = document.createElement("div");
+        projectCard.classList.add("project-card");
+
+        const availableSpots = project.teamSize - project.currentMembers;
+
+        projectCard.innerHTML = `
+            <h3>${project.title}</h3>
+
+            <p class="project-creator">
+                Created by ${project.creator}
+            </p>
+
+            <p class="project-description">
+                ${project.description}
+            </p>
+
+            <div class="skills-container">
+                ${project.skills.map(function(skill) {
+                    return `<span class="skill-tag">${skill}</span>`;
+                }).join("")}
+            </div>
+
+            <p class="team-info">
+                👥 Team: ${project.currentMembers} / ${project.teamSize}
+            </p>
+
+            <p class="spots-info">
+                ${availableSpots} spot${availableSpots !== 1 ? "s" : ""} available
+            </p>
+
+            <a href="#" class="project-btn" data-id="${project.id}">
+                View Project
+            </a>
+        `;
+
+        projectsContainer.appendChild(projectCard);
+    });
+}
+
+displayProjects(projects);
+
+const projectDetailsSection = document.getElementById("projectDetails");
+const projectDetailsContent = document.getElementById("projectDetailsContent");
+const backToProjects = document.getElementById("backToProjects");
+
+function showProject(projectId) {
+    const project = projects.find(function(project) {
+        return project.id === projectId;
+    });
+
+    if (!project) {
+        return;
+    }
+
+    const availableSpots = project.teamSize - project.currentMembers;
+
+    projectDetailsContent.innerHTML = `
+        <h1>${project.title}</h1>
+
+        <p class="project-creator">
+            Created by ${project.creator}
+        </p>
+
+        <h3>About this project</h3>
+
+        <p class="project-description">
+            ${project.description}
+        </p>
+
+        <h3>Required Skills</h3>
+
+        <div class="skills-container">
+            ${project.skills.map(function(skill) {
+                return `<span class="skill-tag">${skill}</span>`;
+            }).join("")}
+        </div>
+
+        <h3>Team</h3>
+
+        <p class="team-info">
+            👥 ${project.currentMembers} / ${project.teamSize} members
+        </p>
+
+        <p class="spots-info">
+            ${availableSpots} spot${availableSpots !== 1 ? "s" : ""} available
+        </p>
+
+        <button class="collaboration-btn" id="joinProjectBtn">
+            🤝 Request to Join
+        </button>
+    `;
+
+    document.getElementById("projects").style.display = "none";
+    projectDetailsSection.style.display = "block";
+
+    projectDetailsSection.scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+document.addEventListener("click", function(event) {
+
+    if (event.target.classList.contains("project-btn")) {
+
+        event.preventDefault();
+
+        const projectId = Number(event.target.dataset.id);
+
+        showProject(projectId);
+    }
+
+});
+
+backToProjects.addEventListener("click", function() {
+
+    projectDetailsSection.style.display = "none";
+
+    document.getElementById("projects").style.display = "block";
+
+    document.getElementById("projects").scrollIntoView({
+        behavior: "smooth"
+    });
+
+});
+
+document.addEventListener("click", function(event) {
+
+    if (event.target.id === "joinProjectBtn") {
+
+        event.target.textContent = "✓ Request Sent";
+        event.target.disabled = true;
+
+    }
+
 });
