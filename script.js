@@ -238,7 +238,7 @@ function showProfile(studentId) {
             ${student.about}
         </p>
 
-        <button class="collaboration-btn">
+        <button class="collaboration-btn" id="collaborationBtn" >
             🤝 Request Collaboration
         </button>
     `;
@@ -269,4 +269,13 @@ backToStudents.addEventListener("click", function() {
     document.getElementById("students").scrollIntoView({
         behavior: "smooth"
     });
+});
+
+document.addEventListener("click", function(event) {
+    if (event.target.id === "collaborationBtn") {
+
+        event.target.textContent = "✓ Request Sent";
+        event.target.disabled = true;
+
+    }
 });
