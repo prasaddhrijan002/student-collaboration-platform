@@ -303,7 +303,7 @@ backToStudents.addEventListener("click", function() {
     });
 });
 
-document.addEventListener("click", function(event) {
+document.addEventListener("click", async function(event) {
     if (event.target.id === "collaborationBtn") {
 
         event.target.textContent = "✓ Request Sent";
@@ -367,7 +367,7 @@ async function loadProjectsFromAPI() {
     const apiProjects = await response.json();
 
     if (apiProjects.length > 0) {
-      displayProjects(apiProjects);
+      displayProjects([...projects, ...apiProjects]);
     } else {
       displayProjects(projects);
     }
@@ -426,7 +426,7 @@ function showProject(projectId) {
             ${availableSpots} spot${availableSpots !== 1 ? "s" : ""} available
         </p>
 
-        <button class="collaboration-btn" id="joinProjectBtn">
+        <button class="collaboration-btn" id="joinProjectBtn" data-project-id="${project.id}">
             🤝 Request to Join
         </button>
     `;
@@ -464,14 +464,41 @@ backToProjects.addEventListener("click", function() {
 
 });
 
-document.addEventListener("click", function(event) {
+document.addEventListener("click", async function(event) {
+
 
     if (event.target.id === "joinProjectBtn") {
 
-        event.target.textContent = "✓ Request Sent";
-        event.target.disabled = true;
+        const projectId = event.target.dataset.projectId;
 
+        try {
+            const response = await fetch(
+                "https://51wlhxz97l.execute-api.ap-south-1.amazonaws.com/prod/requests",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        projectId: projectId,
+                        studentName: "You"
+                    })
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Failed to send request");
+            }
+
+            event.target.textContent = "✓ Request Sent";
+            event.target.disabled = true;
+
+        } catch (error) {
+            console.error("Error sending join request:", error);
+            alert("Could not send request. Please try again.");
+        }
     }
+    
 
 });
 
